@@ -1,0 +1,14 @@
+#!/bin/bash
+
+[[ -n $1 ]] && what=$1 || what="."
+[[ -n $2 ]] && where=$2 || where="."
+echo Find "'$what' in '$where'"
+
+for file in $(find $what/* -type f );
+
+do
+	c=$(grep -R $(basename $file) $(find $where/* -type f | egrep -v '\.(jpg|png|gif|svg|ttf|eot|woff|bz2|log|idx|mp3|swf)') | wc -l);
+	f=$(grep -Rl $(basename $file) $(find $where/* -type f | egrep -v '\.(jpg|png|gif|svg|ttf|eot|woff|bz2|log|idx|mp3|swf)'));
+
+	[[ $c -gt 0 ]] && echo -e "[+] $file" || echo -e "\x1b[31m[-] $file\x1b[0m";
+done
